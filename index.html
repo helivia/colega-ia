@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;600&display=swap">
+<title>Colega.IA</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<header class="dk"><div class="wrap">
+  <a class="logo" href="#inicio">Colega<span>.IA</span></a>
+  <nav aria-label="Principal">
+    <a href="#sobre">O que é</a><a href="#demo">Demonstração</a><a href="#como">Como funciona</a><a href="#planos">Planos</a><a href="#faq">Perguntas</a>
+    <button type="button" class="btn alt" id="openAcc">Criar conta</button>
+    <a class="btn" href="#demo">Personalizar</a>
+  </nav>
+</div></header>
+
+<main id="inicio">
+<section class="hero dk"><div class="wrap">
+  <div>
+    <p class="mono"><span class="dot"></span>Assistentes virtuais para empresas</p>
+    <h1>Sua empresa merece um <span class="hl">atendimento inteligente.</span></h1>
+    <p class="lead">Eu sou Ellie, assistente da Colega.IA. E posso te ajudar a criar uma IA com a identidade e as necessidades do seu negócio.</p>
+    <div class="row"><a class="btn" href="#demo">Quero criar minha IA</a><a class="btn alt" href="#planos">Conhecer os planos</a></div>
+  </div>
+  <div class="ellie-hero-card">
+    <div class="ellie-orbit" aria-hidden="true"></div>
+    <div class="ellie-portrait" role="img" aria-label="Ilustração estilizada da Ellie, assistente virtual da Colega.IA">
+      <div class="portrait-glow"></div>
+      <div class="portrait-hair"></div>
+      <div class="portrait-face">
+        <div class="portrait-brow left"></div><div class="portrait-brow right"></div>
+        <div class="portrait-eye left"></div><div class="portrait-eye right"></div>
+        <div class="portrait-nose"></div><div class="portrait-smile"></div>
+        <div class="portrait-blush left"></div><div class="portrait-blush right"></div>
+      </div>
+      <div class="portrait-neck"></div><div class="portrait-body"></div>
+      <div class="portrait-phone"><span></span><span></span><span></span></div>
+      <div class="portrait-arm"></div>
+    </div>
+    <div class="ellie-card-copy"><span class="online-dot"></span><span>Ellie · Assistente virtual</span><p>Oi! Vamos descobrir o que sua empresa precisa?</p>
+      <div class="ellie-actions"><button type="button" id="ellieWave">Dar oi <span>↗</span></button><button type="button" id="elliePresent">Conhecer a Colega.IA <span>→</span></button></div>
+    </div>
+  </div>
+</div></section>
+
+<section id="sobre"><div class="wrap">
+  <p class="mono">O que é</p>
+  <h2>Uma IA que combina com <span class="hl">o seu negócio.</span></h2>
+  <div class="two">
+    <div>
+      <p>A Colega.IA ajuda empresas a criarem assistentes de inteligência artificial personalizados. Você define a função, o tom de voz, as informações e a experiência que deseja oferecer aos seus clientes.</p>
+      <p>A Ellie é a assistente que apresenta a Colega.IA e orienta você por aqui. A IA que sua empresa contratar será configurada separadamente para atender ao seu público e aos seus processos.</p>
+    </div>
+    <div class="panel">
+      <h3>O que vamos oferecer</h3>
+      <ul class="l">
+        <li><strong>Aparência própria:</strong> uma pessoa virtual ou um personagem, como um mascote.</li>
+        <li><strong>Funções:</strong> atendimento, dúvidas sobre produtos e serviços, captação de contatos, organização de pedidos, agendamentos e suporte interno, conforme o plano.</li>
+        <li><strong>Seu jeito de falar:</strong> amigável, formal ou descontraído.</li>
+        <li><strong>Transparência:</strong> o assistente sempre se identifica como IA e pode encaminhar para uma pessoa.</li>
+        <li><strong>Preço acessível,</strong> com limites claros para não ter conta-surpresa.</li>
+        <li><strong>Ajuda de um profissional de TI</strong> para configurar o assistente com você.</li>
+      </ul>
+    </div>
+  </div>
+  <p class="muted">Pensado para lojas, clínicas, restaurantes, prestadores de serviço, empresas de tecnologia e equipes internas. Não prometemos resultados financeiros.</p>
+</div></section>
+
+<section id="demo" class="dk"><div class="wrap">
+  <h2>Conte pra gente o que você <span class="hl">precisa.</span></h2>
+  <p class="muted">Responda algumas perguntas rápidas. Vamos entender que tipo de assistente faz sentido para sua empresa.</p>
+  <div class="panel cta"><div><strong>Precisa de ajuda para começar?</strong><br><span class="muted">Para criar o seu assistente de verdade, você conversa antes com um profissional de TI, que entende o seu negócio e configura tudo com você.</span></div><button type="button" class="btn alt talkIT">Falar com um profissional de TI</button></div>
+  <div class="demo">
+    <form class="panel" id="cfg" onsubmit="return false" aria-label="Personalização do assistente">
+      <fieldset><legend>Tipo de assistente</legend><div class="pills" id="g-kind"></div><p class="muted" style="font-size:14px;margin:8px 0 0">Pessoa virtual é uma ilustração, não uma pessoa real. A conversa sempre se identifica como assistente virtual.</p></fieldset>
+      <fieldset><legend>Aparência</legend><div class="pills" id="g-char"></div></fieldset>
+      <fieldset><label class="t" for="nome">Nome da IA da sua empresa</label><input type="text" id="nome" name="name" maxlength="24" value="Bia" autocomplete="off"></fieldset>
+      <fieldset><label class="t" for="fn">Função</label>
+        <select id="fn" name="fn">
+          <option value="atendimento">Atendimento ao cliente</option>
+          <option value="vendas">Vendas</option>
+          <option value="agenda">Agendamentos</option>
+          <option value="interno">Suporte interno</option>
+        </select></fieldset>
+      <fieldset><legend>Estilo de comunicação</legend><div class="pills" id="g-tone"></div></fieldset>
+      <fieldset><legend>Cor</legend><div class="pills" id="g-color"></div></fieldset>
+    </form>
+
+    <div class="panel" aria-label="Prévia e conversa">
+      <div class="who"><div class="stage" id="miniStage"></div><div><h3 id="pName">Bia</h3><span class="badge" id="pFn">Atendimento ao cliente</span></div></div>
+      <p class="note" role="note"><strong>Demonstração simulada.</strong> As respostas são pré-definidas e não vêm de uma IA real. Você está conversando com um programa de exemplo. Não digite dados pessoais.</p>
+      <div id="log" role="log" aria-live="polite" aria-label="Conversa de demonstração"></div>
+      <div class="chips" id="chips"></div>
+      <form class="send" id="chat" onsubmit="return false">
+        <label class="sr" for="msg">Sua mensagem</label>
+        <input type="text" id="msg" maxlength="200" placeholder="Escreva uma mensagem" autocomplete="off">
+        <button class="btn" type="submit">Enviar</button>
+      </form>
+    </div>
+  </div>
+</div></section>
+
+<section id="como"><div class="wrap">
+  <h2>Como <span class="hl">funciona</span></h2>
+  <div class="grid">
+    <div class="panel step"><b>1</b><h3>Crie</h3><p>A empresa cria o seu assistente.</p></div>
+    <div class="panel step"><b>2</b><h3>Personalize</h3><p>Define identidade, função e comportamento.</p></div>
+    <div class="panel step"><b>3</b><h3>Informe</h3><p>Adiciona as informações sobre o negócio.</p></div>
+    <div class="panel step"><b>4</b><h3>Teste</h3><p>Confere as respostas antes de publicar.</p></div>
+    <div class="panel step"><b>5</b><h3>Publique</h3><p>Coloca o assistente nos canais compatíveis.</p></div>
+    <div class="panel step"><b>6</b><h3>Acompanhe</h3><p>Vê o desempenho e atualiza as configurações.</p></div>
+  </div>
+</div></section>
+
+<section id="planos" class="dk"><div class="wrap">
+  <h2>Planos <span class="hl">(sugestões)</span></h2>
+  <p class="muted">Valores e limites são hipóteses iniciais. Serão definidos depois de calcular os custos de IA, hospedagem e suporte. Não haverá uso ilimitado de IA.</p>
+  <div class="grid">
+    <div class="panel"><h3>Demonstração</h3><div class="price">R$ 0</div><ul class="l"><li>Teste da personalização</li><li>Conversa simulada</li></ul></div>
+    <div class="panel"><h3>Inicial</h3><div class="price">R$ 49,90 <small>/mês (sugestão)</small></div><ul class="l"><li>1 assistente</li><li>Limite mensal de mensagens: a definir</li></ul></div>
+    <div class="panel"><h3>Crescimento</h3><div class="price">A definir</div><ul class="l"><li>Mais assistentes e mensagens</li><li>Limites: a definir</li></ul></div>
+    <div class="panel"><h3>Avançado</h3><div class="price">A definir</div><ul class="l"><li>Necessidades maiores</li><li>Plano anual com desconto: a definir</li></ul></div>
+  </div>
+</div></section>
+
+<section id="faq"><div class="wrap">
+  <h2>Perguntas <span class="hl">frequentes</span></h2>
+  <details><summary>A Ellie já usa IA de verdade?</summary><p>A conversa desta demonstração é simulada. A integração com IA real ainda precisa ser desenvolvida no servidor.</p></details>
+  <details><summary>Minhas mensagens ficam salvas?</summary><p>Nesta demonstração, não. Nada é enviado nem guardado. Mesmo assim, evite digitar dados pessoais.</p></details>
+  <details><summary>Quanto vai custar?</summary><p>Os preços acima são sugestões e podem mudar depois do cálculo de custos.</p></details>
+  <details><summary>O cliente poderá remover as regras de segurança?</summary><p>Não. As instruções personalizadas orientam o comportamento, mas os controles essenciais de segurança permanecem.</p></details>
+</div></section>
+</main>
+
+<footer class="dk"><div class="wrap">
+  <strong>Colega.IA</strong> © 2026
+</div></footer>
+
+<dialog id="dlg" aria-labelledby="dlgT"><h2 id="dlgT" style="font-size:36px"></h2><p id="dlgP"></p><button type="button" class="btn" id="dlgX">Entendi</button></dialog>
+
+<div id="chatWidget">
+  <section id="chatPanel" aria-label="Conversa com Ellie" aria-hidden="true">
+    <div class="chat-head">
+      <div class="chat-avatar">E</div>
+      <div><strong>Ellie</strong><small><span class="online-dot"></span>Assistente da Colega.IA</small></div>
+      <button class="chat-close" type="button" id="chatClose" aria-label="Fechar conversa">×</button>
+    </div>
+    <div class="chat-body" id="ellieChatBody">
+      <p class="chat-note">Conversa de demonstração</p>
+      <div class="chat-bubble">Oi! Eu sou a Ellie 💚 Posso te ajudar a entender como uma IA pode trabalhar na sua empresa. Por onde começamos?</div>
+      <div class="chat-choices" id="ellieChoices">
+        <button type="button" data-reply="Quero atender melhor meus clientes">Atender melhor meus clientes</button>
+        <button type="button" data-reply="Quero vender mais e responder dúvidas">Ajudar nas vendas</button>
+        <button type="button" data-reply="Quero automatizar tarefas e agendamentos">Automatizar tarefas</button>
+        <button type="button" data-reply="Ainda não sei, quero entender as opções">Ainda estou explorando</button>
+      </div>
+    </div>
+    <form class="chat-form" id="ellieChatForm">
+      <input id="ellieChatInput" type="text" maxlength="500" placeholder="Escreva sua dúvida..." aria-label="Escreva sua mensagem">
+      <button type="submit" aria-label="Enviar mensagem">↑</button>
+    </form>
+    <div id="chatDisclaimer">As respostas são simuladas nesta versão. Não envie dados pessoais.</div>
+  </section>
+  <button id="chatLauncher" type="button" aria-label="Conversar com Ellie" aria-expanded="false" aria-controls="chatPanel">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 11.5a7.5 7.5 0 0 1-7.5 7.5 8 8 0 0 1-3.4-.75L4 20l1.6-4.3A7.5 7.5 0 1 1 20 11.5Z"/><path d="M8 11.5h.01M12.5 11.5h.01M16 11.5h.01"/></svg>
+  </button>
+</div>
+
+<script src="js/personagens.js"></script>
+<script src="js/demo.js"></script>
+<script src="js/ellie.js"></script>
+</body>
+</html>

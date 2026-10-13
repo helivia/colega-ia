@@ -1,0 +1,3 @@
+Coloque aqui as imagens PNG das personagens (ex.: luna.png).
+Nome em minúsculas, sem espaço e sem acento.
+Depois, ative a personagem no arquivo js/personagens.js (veja as instruções no final dele).

@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;600&display=swap">
+<title>Colega.IA - Protótipo</title>
+<style>
+:root{box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);
+--bg:#f2efe6;--ink:#0b0b0b;--muted:#4d4f4a;--card:#fbf9f3;--line:#0b0b0b;--bd:rgba(11,11,11,.18);--hl:#c8ff2e;--brand:#c8ff2e;--on-brand:#0b0b0b;--brand-ink:#3f6b00}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#121312;--ink:#f2efe6;--muted:#a9ada4;--card:#1b1d1b;--line:#f2efe6;--bd:rgba(242,239,230,.2);--brand-ink:#c8ff2e}}
+:root[data-theme="dark"]{--bg:#121312;--ink:#f2efe6;--muted:#a9ada4;--card:#1b1d1b;--line:#f2efe6;--bd:rgba(242,239,230,.2);--brand-ink:#c8ff2e}
+html{scroll-behavior:smooth;scroll-padding-top:calc(env(safe-area-inset-top,0px) + 80px)}
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:"DM Sans","Segoe UI",system-ui,Arial,sans-serif;line-height:1.55;font-size:17px}
+a{color:inherit}
+:focus-visible{outline:3px solid var(--ink);outline-offset:2px}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.wrap{max-width:1080px;margin:0 auto;padding:0 20px}
+section{padding:64px 0}
+h1,h2,h3{line-height:1.15;margin:0 0 14px}
+h1{font-size:clamp(34px,6vw,58px)}
+h2{font-size:clamp(26px,4vw,38px)}
+.hl{background:var(--hl);color:#1b1b1f;padding:0 .2em;border-radius:.2em}
+.muted{color:var(--muted)}
+header{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--bg);border-bottom:1px solid var(--bd)}
+header .wrap{display:flex;align-items:center;justify-content:space-between;gap:12px;padding-top:12px;padding-bottom:12px}
+.logo{font-weight:800;font-size:22px;text-decoration:none}
+.logo span{background:var(--hl);color:#1b1b1f;padding:0 .25em;border-radius:.25em}
+nav{display:flex;gap:18px;align-items:center}
+nav a{text-decoration:none;font-weight:600}
+nav a:hover{text-decoration:underline}
+.btn{display:inline-block;border:1px solid var(--bd);border-radius:12px;padding:12px 22px;font:inherit;font-weight:700;background:var(--brand);color:var(--on-brand);box-shadow:none;cursor:pointer;text-decoration:none}
+.btn.alt{background:var(--card);color:var(--ink)}
+.btn:hover{transform:translate(-1px,-1px)}
+.hero .wrap{display:grid;grid-template-columns:1.2fr .8fr;gap:32px;align-items:center}
+.hero p.lead{font-size:20px;max-width:520px}
+.row{display:flex;gap:14px;flex-wrap:wrap;margin-top:22px}
+.stage{background:#fffaf0;border:1px solid var(--bd);border-radius:24px;box-shadow:none;padding:18px;display:flex;justify-content:center}
+.stage svg{width:100%;max-width:240px;height:auto}
+.bubble{margin-top:14px;border:1px solid var(--bd);border-radius:14px;padding:10px 14px;background:var(--card);font-weight:600}
+.demo{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-top:24px}
+.panel{background:var(--card);border:1px solid var(--bd);border-radius:20px;padding:20px;box-shadow:none}
+fieldset{border:0;margin:0 0 16px;padding:0}
+legend,label.t{font-weight:700;display:block;margin-bottom:8px;padding:0}
+input[type=text],select{width:100%;padding:12px;border:1px solid var(--bd);border-radius:10px;font:inherit;background:var(--bg);color:var(--ink)}
+.pills{position:relative;display:flex;flex-wrap:wrap;gap:8px}
+.pills input{position:absolute;opacity:0}
+.pills label{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--bd);border-radius:999px;padding:7px 14px;cursor:pointer;background:var(--card)}
+.pills input:checked+label{background:var(--ink);color:var(--bg)}
+.pills input:checked+label::before{content:"\2713"}
+.pills input:focus-visible+label{outline:3px solid var(--ink);outline-offset:2px}
+.sw{width:14px;height:14px;border-radius:50%;border:2px solid #1b1b1f;display:inline-block}
+.who{display:flex;align-items:center;gap:14px;margin-bottom:12px}
+.who .stage{padding:6px;box-shadow:none;border-radius:16px;width:92px;flex:none}
+.who h3{margin:0}
+.badge{display:inline-block;border:1px solid var(--bd);border-radius:999px;padding:2px 12px;font-size:14px;font-weight:700;background:var(--hl);color:#1b1b1f}
+.note{border:1px dashed var(--bd);border-radius:12px;padding:10px 14px;margin:0 0 12px;font-size:15px}
+#log{height:240px;overflow-y:auto;padding:4px 2px}
+.message-line{display:flex;align-items:flex-end;gap:8px;margin:10px 0;max-width:100%}
+.message-line.user-line{justify-content:flex-end}
+.msg{max-width:calc(100% - 48px);padding:10px 14px;border:1px solid var(--bd);border-radius:14px;margin:0;overflow-wrap:anywhere}
+.msg small{display:block;font-size:12px;font-weight:700;opacity:.8;margin-bottom:3px}
+.msg.bot{background:var(--hl);color:#1b1b1f}
+.msg.user{background:var(--bg)}
+.msg-avatar{width:38px;height:38px;flex:0 0 38px;display:grid;place-items:center;background:#fffaf0;border:1px solid var(--bd);border-radius:13px;padding:3px}
+.msg-avatar svg{width:100%;height:100%;display:block}
+
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin:8px 0}
+.chips button{font:inherit;font-size:14px;border:1px solid var(--bd);border-radius:999px;padding:5px 12px;background:var(--card);color:var(--ink);cursor:pointer}
+.send{display:flex;gap:8px}
+.send .btn{padding:10px 18px;box-shadow:none}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:18px;margin-top:24px}
+.step b{display:inline-grid;place-items:center;width:34px;height:34px;border-radius:50%;background:var(--ink);color:var(--bg);margin-bottom:8px}
+.price{font-size:30px;font-weight:800}
+.price small{font-size:14px;font-weight:600}
+ul.l{padding-left:20px;margin:10px 0 0}
+details{border:1px solid var(--bd);border-radius:12px;padding:12px 16px;margin:10px 0;background:var(--card)}
+summary{font-weight:700;cursor:pointer}
+footer{border-top:1px solid var(--bd);padding:28px 0;font-size:15px}
+@media (max-width:860px){.hero .wrap,.demo{grid-template-columns:1fr}nav a:not(.btn){display:none}}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}.btn:hover{transform:none}}
+
+:root{--grid:rgba(27,27,31,.07)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--grid:rgba(245,241,232,.08)}}
+:root[data-theme="dark"]{--grid:rgba(245,241,232,.08)}
+h1,h2,h3,.logo,.btn,.price{font-family:"Space Grotesk","Segoe UI",system-ui,sans-serif}
+.mono{font-family:"JetBrains Mono",ui-monospace,Consolas,monospace;font-size:13px;letter-spacing:.05em;text-transform:uppercase;color:var(--brand-ink);font-weight:600;margin:0 0 12px}
+.dot{display:inline-block;width:9px;height:9px;border-radius:50%;background:#16a34a;margin-right:6px;animation:pulse 1.6s infinite}
+@keyframes pulse{50%{opacity:.35}}
+@keyframes spin{to{rotate:360deg}}
+.hero{overflow:hidden;background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);background-size:36px 36px}
+.holo{position:relative;isolation:isolate}
+.ring{position:absolute;left:50%;top:42%;width:112%;aspect-ratio:1;translate:-50% -50%;border:2px dashed var(--brand);border-radius:50%;z-index:-1;animation:spin 40s linear infinite}
+.hud{position:relative}
+.hud::before,.hud::after{content:"";position:absolute;width:22px;height:22px;border:3px solid var(--brand)}
+.hud::before{top:8px;left:8px;border-right:0;border-bottom:0}
+.hud::after{right:8px;bottom:8px;border-left:0;border-top:0}
+.btn:not(.alt){box-shadow:0 0 24px rgba(200,255,46,.35)}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin:20px 0}
+.cta{display:flex;gap:16px;align-items:center;justify-content:space-between;flex-wrap:wrap;margin-top:18px}
+.cta .btn{box-shadow:none}
+dialog{border:1px solid var(--bd);border-radius:18px;background:var(--card);color:var(--ink);max-width:420px;padding:22px;box-shadow:none}
+dialog::backdrop{background:rgba(20,20,24,.6)}
+nav .btn{padding:8px 14px}
+@media (max-width:860px){.two{grid-template-columns:1fr}}
+@media (prefers-reduced-motion:reduce){.ring,.dot{animation:none}}
+
+.dk{--bg:#0b0c0b;--ink:#f2efe6;--muted:#a9ada4;--card:#16181a;--line:#f2efe6;--bd:rgba(242,239,230,.2);--brand-ink:#c8ff2e;--grid:rgba(242,239,230,.07);background-color:var(--bg);color:var(--ink)}
+.dk .hl{background:none;color:var(--hl);padding:0}
+body{font-family:"DM Sans","Segoe UI",system-ui,sans-serif}
+h1,h2,h3,.logo,.price{font-family:"Manrope","DM Sans",sans-serif;font-weight:700;letter-spacing:-.045em;text-transform:none}
+h1{font-size:clamp(42px,6.8vw,76px);line-height:1.02}
+h2{font-size:clamp(30px,4.8vw,48px);line-height:1.08}
+h3{font-size:23px}
+.logo{font-size:25px}
+.price{font-size:40px}
+.price small{font-family:"DM Sans",sans-serif;text-transform:none}
+.btn{font-family:"DM Sans","Segoe UI",sans-serif;border-radius:14px;border-color:transparent;transition:transform .2s ease,box-shadow .2s ease}
+.btn.alt{background:transparent;color:var(--ink);border-color:var(--bd)}
+.btn:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(0,0,0,.08)}
+
+/* Ellie: identidade de suporte da Colega.IA */
+:root{--hl:#d6f3d4;--brand:#bce7c0;--soft-pink:#f6e7ed;--soft-lilac:#eee9fb;--ellie-ink:#26352c}
+.hl{background:linear-gradient(120deg,#dff4dc,#e8e4fb);color:#26352c;border-radius:.28em}
+.dk .hl{color:#f3f7f1;background:linear-gradient(120deg,#4c7657,#7763a7)}
+.hero .wrap{display:grid;grid-template-columns:1.05fr .95fr;align-items:center;gap:48px;min-height:570px}
+.hero .lead{max-width:550px;font-size:19px;color:var(--muted)}
+.hero .mono{letter-spacing:.03em}
+.ellie-hero-card{position:relative;isolation:isolate;min-height:430px;display:flex;align-items:flex-end;justify-content:center;padding:0 24px 24px;border:1px solid rgba(124,145,129,.18);border-radius:34px;background:linear-gradient(145deg,#f6f0f4 0%,#e9f0e7 50%,#efebfa 100%);overflow:hidden;box-shadow:0 24px 70px rgba(45,59,49,.09)}
+.ellie-orbit{position:absolute;width:320px;height:320px;top:20px;left:50%;transform:translateX(-50%);border:1px solid rgba(90,119,97,.18);border-radius:50%;box-shadow:0 0 0 22px rgba(255,255,255,.16),0 0 0 44px rgba(255,255,255,.12)}
+.ellie-portrait{position:absolute;top:14px;left:50%;transform:translateX(-50%);width:275px;height:340px;animation:ellieFloat 4s ease-in-out infinite}
+.portrait-glow{position:absolute;width:210px;height:230px;left:32px;top:32px;background:linear-gradient(145deg,#d6e8d2,#e4daf2);border-radius:48% 52% 42% 58%;filter:blur(1px)}
+.portrait-hair{position:absolute;z-index:3;top:42px;left:65px;width:150px;height:166px;border-radius:48% 48% 42% 42%;background:linear-gradient(130deg,#392a2c,#68464a 55%,#2c252a);box-shadow:inset -12px 0 0 rgba(0,0,0,.1)}
+.portrait-face{position:absolute;z-index:4;top:64px;left:82px;width:116px;height:137px;border-radius:45% 45% 48% 48%;background:linear-gradient(130deg,#f2c7ac,#dca185);box-shadow:inset -8px -2px 0 rgba(160,95,77,.08)}
+.portrait-face:before{content:"";position:absolute;left:-9px;top:69px;width:15px;height:27px;border-radius:50%;background:#e4ad91}
+.portrait-face:after{content:"";position:absolute;right:-8px;top:69px;width:15px;height:27px;border-radius:50%;background:#dba083}
+.portrait-brow{position:absolute;top:43px;width:23px;height:6px;border-top:2px solid #4b3030;border-radius:50%}
+.portrait-brow.left{left:21px;transform:rotate(-5deg)}.portrait-brow.right{right:21px;transform:rotate(5deg)}
+.portrait-eye{position:absolute;top:53px;width:17px;height:10px;border-bottom:2px solid #39292c;border-radius:0 0 60% 60%}
+.portrait-eye.left{left:23px}.portrait-eye.right{right:23px}
+.portrait-nose{position:absolute;top:61px;left:55px;width:8px;height:19px;border-right:1.5px solid rgba(137,82,70,.55);border-radius:50%}
+.portrait-smile{position:absolute;left:43px;top:93px;width:31px;height:13px;border-bottom:2px solid #a95358;border-radius:0 0 50% 50%}
+.portrait-blush{position:absolute;top:81px;width:20px;height:9px;border-radius:50%;background:rgba(221,123,127,.28);filter:blur(3px)}
+.portrait-blush.left{left:9px}.portrait-blush.right{right:9px}
+.portrait-neck{position:absolute;z-index:2;top:178px;left:121px;width:37px;height:47px;background:#d9a084;border-radius:0 0 14px 14px}
+.portrait-body{position:absolute;z-index:2;top:206px;left:42px;width:190px;height:150px;border-radius:70px 70px 25px 25px;background:linear-gradient(120deg,#f8f7f3,#dce8dc 55%,#c5d9ca);border:1px solid rgba(93,126,99,.2)}
+.portrait-phone{position:absolute;z-index:6;top:236px;right:31px;width:43px;height:72px;border-radius:10px;background:#313b39;border:3px solid #fff;transform:rotate(-12deg);box-shadow:0 8px 18px rgba(0,0,0,.16);display:flex;flex-direction:column;gap:5px;padding:13px 7px}
+.portrait-phone span{height:4px;border-radius:4px;background:#cfe9ce}
+.portrait-arm{position:absolute;z-index:5;top:234px;right:48px;width:62px;height:93px;border-radius:35px;background:linear-gradient(120deg,#efc1a5,#dca083);transform:rotate(-27deg);border:1px solid rgba(151,97,80,.12)}
+.ellie-card-copy{position:relative;z-index:7;width:100%;padding:17px 19px 15px;border-radius:20px;background:rgba(255,255,255,.84);border:1px solid rgba(255,255,255,.8);box-shadow:0 10px 35px rgba(47,59,49,.08);backdrop-filter:blur(14px)}
+.online-dot{display:inline-block;width:8px;height:8px;border-radius:50%;background:#55a96a;margin-right:7px}
+.ellie-card-copy>span:nth-child(2){font-size:13px;font-weight:700;color:#617066}
+.ellie-card-copy p{margin:8px 0 13px;font-size:15px;color:#27372d}
+.ellie-actions{display:flex;gap:8px;flex-wrap:wrap}
+.ellie-actions button{border:1px solid #e3e9e2;background:#fff;border-radius:11px;padding:9px 12px;color:#314538;font:600 12px "DM Sans",sans-serif;cursor:pointer;transition:.2s}
+.ellie-actions button:hover{background:#eff8ed;transform:translateY(-1px)}
+.ellie-actions button span{margin-left:5px;color:#79947b}
+@keyframes ellieFloat{0%,100%{transform:translate(-50%,0)}50%{transform:translate(-50%,-7px)}}
+#demo .demo{align-items:start}
+#demo .panel,#sobre .panel,.step,details{border-radius:22px;border:1px solid var(--bd);box-shadow:0 10px 35px rgba(24,34,26,.035)}
+#demo fieldset{border:0;border-bottom:1px solid var(--bd);padding:16px 0}
+#demo legend,.t{font-weight:700;letter-spacing:-.02em}
+.pills label{border-radius:12px!important;border:1px solid var(--bd)!important;padding:9px 12px!important;transition:.18s}
+.pills input:checked+label{background:#e5f4e3!important;color:#25442b!important;border-color:#b7d9b8!important}
+.pills .sw{width:13px;height:13px;border-radius:50%;border:1px solid rgba(0,0,0,.1)}
+.btn{box-shadow:none}
+.btn:not(.alt){background:#263d2d;color:white}
+.btn:not(.alt):hover{background:#36533d}
+#chatWidget{position:fixed;z-index:50;right:24px;bottom:24px;font-family:"DM Sans",sans-serif}
+#chatLauncher{width:62px;height:62px;border:0;border-radius:22px;background:#2e4735;color:#fff;box-shadow:0 12px 32px rgba(33,53,39,.24);display:grid;place-items:center;cursor:pointer;transition:.2s}
+#chatLauncher:hover{transform:translateY(-3px) scale(1.02)}
+#chatLauncher svg{width:28px;height:28px}
+#chatPanel{position:absolute;right:0;bottom:76px;width:min(370px,calc(100vw - 32px));height:500px;max-height:calc(100vh - 120px);background:#fff;border:1px solid #e7ece6;border-radius:24px;box-shadow:0 24px 80px rgba(24,39,28,.2);display:none;overflow:hidden;color:#26352b}
+#chatPanel.open{display:flex;flex-direction:column;animation:chatIn .22s ease-out}
+@keyframes chatIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+.chat-head{display:flex;align-items:center;gap:12px;padding:17px;background:#f3f7f1;border-bottom:1px solid #e4ece3}
+.chat-avatar{width:42px;height:42px;border-radius:15px;background:linear-gradient(140deg,#d5ebd2,#e7ddf6);display:grid;place-items:center;color:#34523a;font-weight:800}
+.chat-head strong{display:block;font-size:15px}.chat-head small{display:block;color:#728176;font-size:12px;margin-top:2px}
+.chat-close{margin-left:auto;border:0;background:transparent;font-size:24px;color:#6b786e;cursor:pointer}
+.chat-body{padding:17px;overflow:auto;flex:1;background:#fff}
+.chat-note{font-size:11px;color:#879188;text-align:center;margin:0 0 13px}
+.chat-bubble{max-width:88%;padding:12px 14px;border-radius:16px 16px 16px 5px;background:#f1f5ef;color:#34473a;font-size:14px;line-height:1.5;margin:8px 0}
+.chat-choices{display:grid;gap:8px;margin-top:12px}
+.chat-choices button{border:1px solid #dce7dc;background:#fff;color:#3c5b43;text-align:left;padding:10px 12px;border-radius:12px;cursor:pointer;font:500 13px "DM Sans",sans-serif}
+.chat-choices button:hover{background:#f0f7ee}
+.chat-form{padding:12px;border-top:1px solid #e9eee8;display:flex;gap:8px}
+.chat-form input{min-width:0;flex:1;border:1px solid #e0e7df;border-radius:13px;padding:12px;font:14px "DM Sans",sans-serif;outline:none}
+.chat-form input:focus{border-color:#8fb696}
+.chat-form button{width:44px;border:0;border-radius:13px;background:#2e4735;color:#fff;cursor:pointer;font-size:18px}
+#chatDisclaimer{padding:0 14px 10px;color:#8b958c;font-size:10px;background:#fff}
+@media(max-width:760px){.hero .wrap{grid-template-columns:1fr;gap:26px;padding-top:30px}.ellie-hero-card{min-height:410px}.hero .wrap>div:first-child{order:0}.ellie-hero-card{order:1}.portrait-phone{right:37px}#chatWidget{right:16px;bottom:16px}#chatLauncher{width:58px;height:58px;border-radius:20px}}
+@media(prefers-reduced-motion:reduce){.ellie-portrait,#chatPanel{animation:none!important}*{scroll-behavior:auto!important;transition:none!important}}
+
+</style>
+</head>
+<body>
+<header class="dk"><div class="wrap">
+  <a class="logo" href="#inicio">Colega<span>.IA</span></a>
+  <nav aria-label="Principal">
+    <a href="#sobre">O que é</a><a href="#demo">Demonstração</a><a href="#como">Como funciona</a><a href="#planos">Planos</a><a href="#faq">Perguntas</a>
+    <button type="button" class="btn alt" id="openAcc">Criar conta</button>
+    <a class="btn" href="#demo">Personalizar</a>
+  </nav>
+</div></header>
+
+<main id="inicio">
+<section class="hero dk"><div class="wrap">
+  <div>
+    <p class="mono"><span class="dot"></span>Protótipo v0.3 · demonstração simulada</p>
+    <h1>Sua empresa merece um <span class="hl">atendimento inteligente.</span></h1>
+    <p class="lead">Eu sou Ellie, assistente da Colega.IA. E posso te ajudar a criar uma IA com a identidade e as necessidades do seu negócio.</p>
+    <div class="row"><a class="btn" href="#demo">Quero criar minha IA</a><a class="btn alt" href="#planos">Conhecer os planos</a></div>
+  </div>
+  <div class="ellie-hero-card">
+    <div class="ellie-orbit" aria-hidden="true"></div>
+    <div class="ellie-portrait" role="img" aria-label="Ilustração estilizada da Ellie, assistente virtual da Colega.IA">
+      <div class="portrait-glow"></div>
+      <div class="portrait-hair"></div>
+      <div class="portrait-face">
+        <div class="portrait-brow left"></div><div class="portrait-brow right"></div>
+        <div class="portrait-eye left"></div><div class="portrait-eye right"></div>
+        <div class="portrait-nose"></div><div class="portrait-smile"></div>
+        <div class="portrait-blush left"></div><div class="portrait-blush right"></div>
+      </div>
+      <div class="portrait-neck"></div><div class="portrait-body"></div>
+      <div class="portrait-phone"><span></span><span></span><span></span></div>
+      <div class="portrait-arm"></div>
+    </div>
+    <div class="ellie-card-copy"><span class="online-dot"></span><span>Ellie · Assistente virtual</span><p>Oi! Vamos descobrir o que sua empresa precisa?</p>
+      <div class="ellie-actions"><button type="button" id="ellieWave">Dar oi <span>↗</span></button><button type="button" id="elliePresent">Conhecer a Colega.IA <span>→</span></button></div>
+    </div>
+  </div>
+</div></section>
+
+<section id="sobre"><div class="wrap">
+  <p class="mono">// o que é</p>
+  <h2>Uma IA que combina com <span class="hl">o seu negócio.</span></h2>
+  <div class="two">
+    <div>
+      <p>A Colega.IA ajuda empresas a criarem assistentes de inteligência artificial personalizados. Você define a função, o tom de voz, as informações e a experiência que deseja oferecer aos seus clientes.</p>
+      <p>A Ellie é a assistente que apresenta a Colega.IA e orienta você por aqui. A IA que sua empresa contratar será configurada separadamente para atender ao seu público e aos seus processos.</p>
+      <p>Esta página é um <strong>protótipo</strong>: a personalização e o chat funcionam no navegador, mas as respostas ainda são simuladas.</p>
+    </div>
+    <div class="panel">
+      <h3>O que vamos oferecer</h3>
+      <ul class="l">
+        <li><strong>Aparência própria:</strong> uma pessoa virtual ou um personagem, como um mascote.</li>
+        <li><strong>Funções:</strong> atendimento, dúvidas sobre produtos e serviços, captação de contatos, organização de pedidos, agendamentos e suporte interno, conforme o plano.</li>
+        <li><strong>Seu jeito de falar:</strong> amigável, formal ou descontraído.</li>
+        <li><strong>Transparência:</strong> o assistente sempre se identifica como IA e pode encaminhar para uma pessoa.</li>
+        <li><strong>Preço acessível,</strong> com limites claros para não ter conta-surpresa.</li>
+        <li><strong>Ajuda de um profissional de TI</strong> para configurar o assistente com você.</li>
+      </ul>
+    </div>
+  </div>
+  <p class="muted">Pensado para lojas, clínicas, restaurantes, prestadores de serviço, empresas de tecnologia e equipes internas. Não prometemos resultados financeiros.</p>
+</div></section>
+
+<section id="demo" class="dk"><div class="wrap">
+  <h2>Conte pra gente o que você <span class="hl">precisa.</span></h2>
+  <p class="muted">Responda algumas perguntas rápidas. Vamos entender que tipo de assistente faz sentido para sua empresa.</p>
+  <div class="panel cta"><div><strong>Precisa de ajuda para começar?</strong><br><span class="muted">Para criar o seu assistente de verdade, você conversa antes com um profissional de TI, que entende o seu negócio e configura tudo com você.</span></div><button type="button" class="btn alt talkIT">Falar com um profissional de TI</button></div>
+  <div class="demo">
+    <form class="panel" id="cfg" onsubmit="return false" aria-label="Personalização do assistente">
+      <fieldset><legend>Tipo de assistente</legend><div class="pills" id="g-kind"></div><p class="muted" style="font-size:14px;margin:8px 0 0">Pessoa virtual é uma ilustração, não uma pessoa real. A conversa sempre se identifica como assistente virtual.</p></fieldset>
+      <fieldset><legend>Aparência</legend><div class="pills" id="g-char"></div></fieldset>
+      <fieldset><label class="t" for="nome">Nome da IA da sua empresa</label><input type="text" id="nome" name="name" maxlength="24" value="Bia" autocomplete="off"></fieldset>
+      <fieldset><label class="t" for="fn">Função</label>
+        <select id="fn" name="fn">
+          <option value="atendimento">Atendimento ao cliente</option>
+          <option value="vendas">Vendas</option>
+          <option value="agenda">Agendamentos</option>
+          <option value="interno">Suporte interno</option>
+        </select></fieldset>
+      <fieldset><legend>Estilo de comunicação</legend><div class="pills" id="g-tone"></div></fieldset>
+      <fieldset><legend>Cor</legend><div class="pills" id="g-color"></div></fieldset>
+    </form>
+
+    <div class="panel" aria-label="Prévia e conversa">
+      <div class="who"><div class="stage" id="miniStage"></div><div><h3 id="pName">Bia</h3><span class="badge" id="pFn">Atendimento ao cliente</span></div></div>
+      <p class="note" role="note"><strong>Demonstração simulada.</strong> As respostas são pré-definidas e não vêm de uma IA real. Você está conversando com um programa de exemplo. Não digite dados pessoais.</p>
+      <div id="log" role="log" aria-live="polite" aria-label="Conversa de demonstração"></div>
+      <div class="chips" id="chips"></div>
+      <form class="send" id="chat" onsubmit="return false">
+        <label class="sr" for="msg">Sua mensagem</label>
+        <input type="text" id="msg" maxlength="200" placeholder="Escreva uma mensagem" autocomplete="off">
+        <button class="btn" type="submit">Enviar</button>
+      </form>
+    </div>
+  </div>
+</div></section>
+
+<section id="como"><div class="wrap">
+  <h2>Como <span class="hl">funciona</span></h2>
+  <div class="grid">
+    <div class="panel step"><b>1</b><h3>Crie</h3><p>A empresa cria o seu assistente.</p></div>
+    <div class="panel step"><b>2</b><h3>Personalize</h3><p>Define identidade, função e comportamento.</p></div>
+    <div class="panel step"><b>3</b><h3>Informe</h3><p>Adiciona as informações sobre o negócio.</p></div>
+    <div class="panel step"><b>4</b><h3>Teste</h3><p>Confere as respostas antes de publicar.</p></div>
+    <div class="panel step"><b>5</b><h3>Publique</h3><p>Coloca o assistente nos canais compatíveis.</p></div>
+    <div class="panel step"><b>6</b><h3>Acompanhe</h3><p>Vê o desempenho e atualiza as configurações.</p></div>
+  </div>
+</div></section>
+
+<section id="planos" class="dk"><div class="wrap">
+  <h2>Planos <span class="hl">(sugestões)</span></h2>
+  <p class="muted">Valores e limites são hipóteses iniciais. Serão definidos depois de calcular os custos de IA, hospedagem e suporte. Não haverá uso ilimitado de IA.</p>
+  <div class="grid">
+    <div class="panel"><h3>Demonstração</h3><div class="price">R$ 0</div><ul class="l"><li>Teste da personalização</li><li>Conversa simulada</li></ul></div>
+    <div class="panel"><h3>Inicial</h3><div class="price">R$ 49,90 <small>/mês (sugestão)</small></div><ul class="l"><li>1 assistente</li><li>Limite mensal de mensagens: a definir</li></ul></div>
+    <div class="panel"><h3>Crescimento</h3><div class="price">A definir</div><ul class="l"><li>Mais assistentes e mensagens</li><li>Limites: a definir</li></ul></div>
+    <div class="panel"><h3>Avançado</h3><div class="price">A definir</div><ul class="l"><li>Necessidades maiores</li><li>Plano anual com desconto: a definir</li></ul></div>
+  </div>
+</div></section>
+
+<section id="faq"><div class="wrap">
+  <h2>Perguntas <span class="hl">frequentes</span></h2>
+  <details><summary>A Ellie já usa IA de verdade?</summary><p>A conversa deste protótipo é simulada. A integração com IA real ainda precisa ser desenvolvida no servidor.</p></details>
+  <details><summary>Minhas mensagens ficam salvas?</summary><p>Nesta demonstração, não. Nada é enviado nem guardado. Mesmo assim, evite digitar dados pessoais.</p></details>
+  <details><summary>Quanto vai custar?</summary><p>Os preços acima são sugestões e podem mudar depois do cálculo de custos.</p></details>
+  <details><summary>O cliente poderá remover as regras de segurança?</summary><p>Não. As instruções personalizadas orientam o comportamento, mas os controles essenciais de segurança permanecem.</p></details>
+</div></section>
+</main>
+
+<footer class="dk"><div class="wrap">
+  <strong>Colega.IA</strong> (nome provisório). Projeto de portfólio em desenvolvimento.<br>
+  Termos de uso e Política de privacidade: em construção. Contato: a definir.
+</div></footer>
+
+<dialog id="dlg" aria-labelledby="dlgT"><h2 id="dlgT" style="font-size:36px"></h2><p id="dlgP"></p><button type="button" class="btn" id="dlgX">Entendi</button></dialog>
+
+<script>
+const S='stroke="#1b1b1f" stroke-width="4" stroke-linejoin="round" stroke-linecap="round"';
+const CH={
+ robo:["Robô",c=>`<svg viewBox="0 0 120 120" role="img" aria-label="Personagem robô"><line x1="60" y1="12" x2="60" y2="26" ${S}/><circle cx="60" cy="10" r="6" fill="#c8ff2e" ${S}/><rect x="22" y="26" width="76" height="66" rx="18" fill="${c}" ${S}/><circle cx="45" cy="55" r="9" fill="#fff" ${S}/><circle cx="75" cy="55" r="9" fill="#fff" ${S}/><circle cx="45" cy="55" r="3.5" fill="#1b1b1f"/><circle cx="75" cy="55" r="3.5" fill="#1b1b1f"/><rect x="44" y="72" width="32" height="8" rx="4" fill="#fff" ${S}/><rect x="34" y="96" width="52" height="16" rx="8" fill="${c}" ${S}/></svg>`],
+ raposa:["Raposa",c=>`<svg viewBox="0 0 120 120" role="img" aria-label="Personagem raposa"><polygon points="20,52 30,12 56,38" fill="${c}" ${S}/><polygon points="100,52 90,12 64,38" fill="${c}" ${S}/><ellipse cx="60" cy="68" rx="40" ry="36" fill="${c}" ${S}/><ellipse cx="60" cy="86" rx="20" ry="14" fill="#fff" ${S}/><circle cx="60" cy="78" r="4.5" fill="#1b1b1f"/><circle cx="45" cy="62" r="4.5" fill="#1b1b1f"/><circle cx="75" cy="62" r="4.5" fill="#1b1b1f"/></svg>`],
+ coruja:["Coruja",c=>`<svg viewBox="0 0 120 120" role="img" aria-label="Personagem coruja"><polygon points="26,36 36,10 54,30" fill="${c}" ${S}/><polygon points="94,36 84,10 66,30" fill="${c}" ${S}/><ellipse cx="60" cy="68" rx="42" ry="44" fill="${c}" ${S}/><circle cx="43" cy="56" r="14" fill="#fff" ${S}/><circle cx="77" cy="56" r="14" fill="#fff" ${S}/><circle cx="43" cy="56" r="5" fill="#1b1b1f"/><circle cx="77" cy="56" r="5" fill="#1b1b1f"/><polygon points="53,72 67,72 60,86" fill="#c8ff2e" ${S}/></svg>`],
+ minimal:["Minimalista",c=>`<svg viewBox="0 0 120 120" role="img" aria-label="Personagem minimalista"><circle cx="60" cy="62" r="46" fill="${c}" ${S}/><circle cx="44" cy="55" r="5.5" fill="#1b1b1f"/><circle cx="76" cy="55" r="5.5" fill="#1b1b1f"/><path d="M42 76 Q60 92 78 76" fill="none" ${S}/></svg>`]
+};
+Object.assign(CH,{
+ menina:["Mulher",c=>`<svg viewBox="0 0 120 120" role="img" aria-label="Pessoa virtual feminina"><ellipse cx="60" cy="62" rx="40" ry="46" fill="#2b1b17" ${S}/><path d="M18 120 Q22 92 60 92 Q98 92 102 120 Z" fill="${c}" ${S}/><rect x="52" y="82" width="16" height="14" fill="#f0c29b" ${S}/><ellipse cx="60" cy="58" rx="28" ry="32" fill="#f0c29b" ${S}/><path d="M32 52 Q60 20 88 52 Q60 40 32 52 Z" fill="#2b1b17" ${S}/><circle cx="50" cy="62" r="3.5" fill="#1b1b1f"/><circle cx="70" cy="62" r="3.5" fill="#1b1b1f"/><path d="M52 74 Q60 81 68 74" fill="none" ${S}/><circle cx="31" cy="62" r="6" fill="#c8ff2e" ${S}/><circle cx="89" cy="62" r="6" fill="#c8ff2e" ${S}/></svg>`],
+ menino:["Homem",c=>`<svg viewBox="0 0 120 120" role="img" aria-label="Pessoa virtual masculina"><path d="M18 120 Q22 92 60 92 Q98 92 102 120 Z" fill="${c}" ${S}/><rect x="52" y="82" width="16" height="14" fill="#f0c29b" ${S}/><ellipse cx="60" cy="58" rx="28" ry="32" fill="#f0c29b" ${S}/><path d="M31 54 Q32 22 60 22 Q88 22 89 54 Q74 38 60 38 Q46 38 31 54 Z" fill="#2b1b17" ${S}/><circle cx="50" cy="62" r="3.5" fill="#1b1b1f"/><circle cx="70" cy="62" r="3.5" fill="#1b1b1f"/><path d="M52 74 Q60 81 68 74" fill="none" ${S}/><circle cx="31" cy="62" r="6" fill="#c8ff2e" ${S}/><circle cx="89" cy="62" r="6" fill="#c8ff2e" ${S}/></svg>`],
+ gato:["Gato",c=>`<svg viewBox="0 0 120 120" role="img" aria-label="Personagem gato"><polygon points="24,52 28,14 54,34" fill="${c}" ${S}/><polygon points="96,52 92,14 66,34" fill="${c}" ${S}/><ellipse cx="60" cy="68" rx="40" ry="34" fill="${c}" ${S}/><ellipse cx="45" cy="64" rx="4.5" ry="6" fill="#1b1b1f"/><ellipse cx="75" cy="64" rx="4.5" ry="6" fill="#1b1b1f"/><polygon points="56,76 64,76 60,81" fill="#ff9bb5" ${S}/><path d="M60 81 Q54 88 50 84 M60 81 Q66 88 70 84 M18 74 L40 76 M18 84 L40 80 M102 74 L80 76 M102 84 L80 80" fill="none" ${S}/></svg>`],
+ orb:["Orbe",c=>`<svg viewBox="0 0 120 120" role="img" aria-label="Personagem orbe futurista"><circle cx="60" cy="60" r="40" fill="${c}" ${S}/><path d="M34 42 Q44 28 60 26" fill="none" stroke="#fff" stroke-width="4" stroke-linecap="round" opacity=".8"/><rect x="40" y="50" width="14" height="18" rx="7" fill="#fff" ${S}/><rect x="66" y="50" width="14" height="18" rx="7" fill="#fff" ${S}/><circle cx="47" cy="60" r="3" fill="#1b1b1f"/><circle cx="73" cy="60" r="3" fill="#1b1b1f"/><ellipse cx="60" cy="60" rx="54" ry="16" fill="none" ${S} transform="rotate(-20 60 60)"/></svg>`]
+});
+const person=o=>c=>`<svg viewBox="0 0 120 120" role="img" aria-label="${o.l}">${o.b||""}<path d="M18 120 Q22 92 60 92 Q98 92 102 120 Z" fill="${c}" ${S}/><rect x="52" y="82" width="16" height="14" fill="${o.s}" ${S}/><ellipse cx="60" cy="58" rx="28" ry="32" fill="${o.s}" ${S}/>${o.f||""}<circle cx="50" cy="62" r="3.5" fill="#1b1b1f"/><circle cx="70" cy="62" r="3.5" fill="#1b1b1f"/>${o.m||`<path d="M52 74 Q60 81 68 74" fill="none" ${S}/>`}${o.x||""}<circle cx="31" cy="62" r="6" fill="#c8ff2e" ${S}/><circle cx="89" cy="62" r="6" fill="#c8ff2e" ${S}/></svg>`;
+const HC="#1a1110";
+const circ=(x,y,r,f)=>`<circle cx="${x}" cy="${y}" r="${r}" fill="${f}" ${S}/>`;
+Object.assign(CH,{
+ cacheada:["Cacheada",person({l:"Pessoa virtual feminina de cabelo cacheado",s:"#8d5a3c",b:circ(34,44,16,HC)+circ(60,30,20,HC)+circ(86,44,16,HC)+circ(26,66,12,HC)+circ(94,66,12,HC),f:`<path d="M34 48 Q60 26 86 48 Q60 38 34 48 Z" fill="${HC}" ${S}/>`})],
+ coque:["Coque",person({l:"Pessoa virtual feminina de coque",s:"#d9a47a",b:circ(60,16,12,"#5a3320"),f:`<path d="M32 52 Q60 22 88 52 Q60 40 32 52 Z" fill="#5a3320" ${S}/>`})],
+ oculos:["Óculos",person({l:"Pessoa virtual feminina de óculos",s:"#f6d3b3",b:`<ellipse cx="60" cy="62" rx="38" ry="40" fill="#c2652a" ${S}/>`,f:`<path d="M31 54 Q36 28 60 26 Q84 28 89 54 Q76 42 60 44 Q44 42 31 54 Z" fill="#c2652a" ${S}/>`,x:`<circle cx="50" cy="62" r="8" fill="none" ${S}/><circle cx="70" cy="62" r="8" fill="none" ${S}/><line x1="58" y1="62" x2="62" y2="62" ${S}/>`})],
+ barba:["Barba",person({l:"Pessoa virtual masculina de barba",s:"#b97a52",f:`<path d="M31 54 Q32 22 60 22 Q88 22 89 54 Q74 38 60 38 Q46 38 31 54 Z" fill="${HC}" ${S}/><path d="M34 66 Q36 92 60 92 Q84 92 86 66 Q74 82 60 82 Q46 82 34 66 Z" fill="${HC}" ${S}/>`,m:`<path d="M54 74 Q60 78 66 74" fill="none" stroke="#f2efe6" stroke-width="3" stroke-linecap="round"/>`})]
+});
+const KIND={cacheada:"pessoa",coque:"pessoa",oculos:"pessoa",barba:"pessoa",menina:"pessoa",menino:"pessoa",robo:"personagem",raposa:"personagem",coruja:"personagem",gato:"personagem",minimal:"personagem",orb:"personagem"};
+const FN={atendimento:["Atendimento ao cliente","Posso tirar dúvidas sobre os produtos e serviços da empresa."],vendas:["Vendas","Posso ajudar você a escolher e registrar seu interesse."],agenda:["Agendamentos","Posso ajudar você a reservar um horário."],interno:["Suporte interno","Posso ajudar a equipe com as dúvidas do dia a dia."]};
+const TONE={amigavel:["Amigável","Oi! ","Como posso ajudar?"],formal:["Formal","Olá. ","Em que posso ser útil?"],descontraido:["Descontraído","E aí! ","Bora ver o que você precisa?"]};
+const COLORS=[["#c8ff2e","Lima"],["#7c3aed","Violeta"],["#ff7a29","Laranja"],["#16a34a","Verde"],["#ec4899","Rosa"],["#0ea5e9","Azul"]];
+const st={kind:"personagem",char:"robo",name:"Bia",fn:"atendimento",tone:"amigavel",color:"#c8ff2e"};
+const $=s=>document.querySelector(s);
+
+function group(key,items){
+  return items.map((it,i)=>`<input type="radio" name="${key}" id="${key}${i}" value="${it[0]}"${st[key]===it[0]?" checked":""}><label for="${key}${i}">${it[2]?`<span class="sw" style="background:${it[2]}"></span>`:""}${it[1]}</label>`).join("");
+}
+function drawChars(){$("#g-char").innerHTML=group("char",Object.keys(CH).filter(k=>KIND[k]===st.kind).map(k=>[k,CH[k][0]]));}
+$("#g-kind").innerHTML=group("kind",[["personagem","Personagem"],["pessoa","Pessoa virtual"]]);
+drawChars();
+$("#g-tone").innerHTML=group("tone",Object.entries(TONE).map(([k,v])=>[k,v[0]]));
+$("#g-color").innerHTML=group("color",COLORS.map(c=>[c[0],c[1],c[0]]));
+
+const chips=["Quais são os horários?","Quanto custa?","Quero falar com uma pessoa"];
+$("#chips").innerHTML=chips.map(t=>`<button type="button">${t}</button>`).join("");
+
+function render(){
+  const svg=CH[st.char][1](st.color);
+  $("#heroStage").innerHTML=svg;
+  $("#miniStage").innerHTML=svg;
+  $("#pName").textContent=st.name;
+  $("#pFn").textContent=FN[st.fn][0];
+}
+function add(who,text){
+  // Cada mensagem recebe uma linha própria. A IA usa o personagem escolhido pelo cliente.
+  const line=document.createElement("div");
+  line.className="message-line "+(who==="bot"?"bot-line":"user-line");
+  const d=document.createElement("div");
+  d.className="msg "+who;
+  const l=document.createElement("small");
+  l.textContent=who==="bot"?st.name+" (simulado)":"Você";
+  const p=document.createElement("span");
+  p.textContent=text;
+  d.append(l,p);
+  if(who==="bot"){
+    const avatar=document.createElement("div");
+    avatar.className="msg-avatar";
+    avatar.setAttribute("aria-label","Avatar de "+st.name);
+    avatar.innerHTML=CH[st.char][1](st.color);
+    line.append(avatar,d);
+  }else{
+    line.append(d);
+  }
+  $("#log").appendChild(line);
+  $("#log").scrollTop=$("#log").scrollHeight;
+  return d;
+}
+function greet(){
+  $("#log").innerHTML="";
+  const T=TONE[st.tone];
+  add("bot",T[1]+"Eu sou "+st.name+". "+FN[st.fn][1]+" "+T[2]);
+}
+function reply(t){
+  const x=t.toLowerCase(),T=TONE[st.tone][1];
+  if(/humano|pessoa|atendente/.test(x))return T+"Claro, posso encaminhar você para uma pessoa da equipe. Na versão real, a empresa define como isso acontece.";
+  if(/hor[aá]rio|agend|marcar|reserv/.test(x))return T+"Posso ajudar a marcar. Que dia e período ficam melhores? (Simulado: nada será agendado de verdade.)";
+  if(/pre[cç]o|valor|quanto|custa/.test(x))return T+"Os valores dependem do serviço. Na versão real, eu consultaria as informações que a empresa cadastrou.";
+  return T+"Entendi. Nesta demonstração eu só tenho respostas de exemplo. Na versão real, eu responderia com base nas informações da empresa.";
+}
+function send(text){
+  text=text.trim().slice(0,200);
+  if(!text)return;
+  add("user",text);
+  const w=add("bot","digitando...");
+  setTimeout(()=>{w.remove();add("bot",reply(text));},600);
+}
+$("#cfg").addEventListener("input",e=>{
+  const k=e.target.name;
+  if(k==="name"){st.name=e.target.value.trim().slice(0,24)||"Assistente";render();document.querySelectorAll("#log .msg.bot small").forEach(el=>el.textContent=st.name+" (simulado)");return;}
+  st[k]=e.target.value;
+  if(k==="kind"){st.char=Object.keys(CH).find(c=>KIND[c]===st.kind);drawChars();}
+  render();
+  if(k!=="color")greet();
+});
+$("#chat").addEventListener("submit",()=>{send($("#msg").value);$("#msg").value="";});
+$("#chips").addEventListener("click",e=>{if(e.target.tagName==="BUTTON")send(e.target.textContent);});
+const dlg=$("#dlg");
+function openDlg(t,p){$("#dlgT").textContent=t;$("#dlgP").textContent=p;dlg.showModal();}
+$("#openAcc").onclick=()=>openDlg("Criar conta","O cadastro ainda não existe nesta versão. Ele entra numa etapa futura do projeto (usuários e login). Por enquanto, nada é coletado e nenhum dado seu é salvo.");
+document.querySelectorAll(".talkIT").forEach(b=>b.onclick=()=>openDlg("Falar com um profissional de TI","O canal de contato ainda está sendo definido. Quando estiver pronto, você poderá conversar com uma pessoa da equipe para configurar o seu assistente. Nada é coletado nesta versão."));
+$("#dlgX").onclick=()=>dlg.close();
+render();greet();
+</script>
+
+<div id="chatWidget">
+  <section id="chatPanel" aria-label="Conversa com Ellie" aria-hidden="true">
+    <div class="chat-head">
+      <div class="chat-avatar">E</div>
+      <div><strong>Ellie</strong><small><span class="online-dot"></span>Assistente da Colega.IA</small></div>
+      <button class="chat-close" type="button" id="chatClose" aria-label="Fechar conversa">×</button>
+    </div>
+    <div class="chat-body" id="ellieChatBody">
+      <p class="chat-note">Demonstração do protótipo</p>
+      <div class="chat-bubble">Oi! Eu sou a Ellie 💚 Posso te ajudar a entender como uma IA pode trabalhar na sua empresa. Por onde começamos?</div>
+      <div class="chat-choices" id="ellieChoices">
+        <button type="button" data-reply="Quero atender melhor meus clientes">Atender melhor meus clientes</button>
+        <button type="button" data-reply="Quero vender mais e responder dúvidas">Ajudar nas vendas</button>
+        <button type="button" data-reply="Quero automatizar tarefas e agendamentos">Automatizar tarefas</button>
+        <button type="button" data-reply="Ainda não sei, quero entender as opções">Ainda estou explorando</button>
+      </div>
+    </div>
+    <form class="chat-form" id="ellieChatForm">
+      <input id="ellieChatInput" type="text" maxlength="500" placeholder="Escreva sua dúvida..." aria-label="Escreva sua mensagem">
+      <button type="submit" aria-label="Enviar mensagem">↑</button>
+    </form>
+    <div id="chatDisclaimer">As respostas são simuladas nesta versão. Não envie dados pessoais.</div>
+  </section>
+  <button id="chatLauncher" type="button" aria-label="Conversar com Ellie" aria-expanded="false" aria-controls="chatPanel">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 11.5a7.5 7.5 0 0 1-7.5 7.5 8 8 0 0 1-3.4-.75L4 20l1.6-4.3A7.5 7.5 0 1 1 20 11.5Z"/><path d="M8 11.5h.01M12.5 11.5h.01M16 11.5h.01"/></svg>
+  </button>
+</div>
+
+<script>
+(function(){
+ const panel=document.getElementById('chatPanel'), launch=document.getElementById('chatLauncher');
+ const body=document.getElementById('ellieChatBody'), form=document.getElementById('ellieChatForm'), input=document.getElementById('ellieChatInput');
+ function openChat(){panel.classList.add('open');panel.setAttribute('aria-hidden','false');launch.setAttribute('aria-expanded','true');input.focus();}
+ function closeChat(){panel.classList.remove('open');panel.setAttribute('aria-hidden','true');launch.setAttribute('aria-expanded','false');launch.focus();}
+ launch.addEventListener('click',()=>panel.classList.contains('open')?closeChat():openChat());
+ document.getElementById('chatClose').addEventListener('click',closeChat);
+ function bubble(text,who){const el=document.createElement('div');el.className='chat-bubble'+(who==='user'?' user':'');el.textContent=text;if(who==='user'){el.style.marginLeft='auto';el.style.background='#e3f3e1';el.style.borderRadius='16px 16px 5px 16px';}body.appendChild(el);body.scrollTop=body.scrollHeight;}
+ function answer(text){
+   const t=text.toLowerCase();
+   if(/atender|cliente|suporte|d[uú]vida/.test(t)) return 'Uma IA pode responder perguntas frequentes, explicar serviços e encaminhar casos para uma pessoa quando necessário. Podemos configurar as respostas com as informações da sua empresa.';
+   if(/venda|vender|produto|comercial/.test(t)) return 'Podemos planejar uma assistente de vendas para apresentar produtos, tirar dúvidas e orientar o cliente. Integrações com estoque ou pedidos seriam uma etapa técnica separada.';
+   if(/automat|agenda|agendamento|tarefa/.test(t)) return 'Podemos desenhar uma IA para organizar solicitações e ajudar com agendamentos. Para executar ações de verdade, ela precisará de integrações e permissões configuradas.';
+   if(/preço|preco|valor|custa|plano/.test(t)) return 'Os planos ainda estão em estudo. A ideia é oferecer opções acessíveis, com limites claros de uso. Posso te ajudar a identificar o que sua empresa precisaria.';
+   if(/personal|apar[eê]ncia|nome|voz/.test(t)) return 'A Ellie é a assistente da Colega.IA. Já a IA que criarmos para sua empresa pode ter nome, tom de voz, função e identidade visual próprios.';
+   if(/humano|pessoa|atendente/.test(t)) return 'O encaminhamento para uma pessoa pode fazer parte do projeto. O canal de contato será definido quando a plataforma estiver pronta.';
+   return 'Legal! A proposta da Colega.IA é criar uma assistente ajustada ao seu negócio. Me conta: ela ajudaria mais no atendimento, nas vendas ou na organização de tarefas?';
+ }
+ function send(text){text=text.trim();if(!text)return;bubble(text,'user');const choices=document.getElementById('ellieChoices');if(choices)choices.remove();window.setTimeout(()=>bubble(answer(text),'bot'),250);}
+ document.getElementById('ellieChoices').addEventListener('click',e=>{const b=e.target.closest('button[data-reply]');if(b){send(b.dataset.reply);}});
+ form.addEventListener('submit',e=>{e.preventDefault();send(input.value);input.value='';});
+ const wave=document.getElementById('ellieWave');if(wave)wave.addEventListener('click',()=>{wave.innerHTML='Oi! <span>♡</span>';document.querySelector('.ellie-card-copy p').textContent='Que bom ter você aqui! Eu sou a Ellie, sua guia na Colega.IA.';});
+ const present=document.getElementById('elliePresent');if(present)present.addEventListener('click',()=>{document.getElementById('demo').scrollIntoView({behavior:'smooth'});});
+})();
+</script>
+</body>
+</html>
